@@ -49,10 +49,22 @@ def copy_files_recursive(source_dir_path, dest_dir_path):
     else:
       copy_files_recursive(source_path, dest_path)
 
+def generate_pages_recursive(dir_path_content, template_path, dest_dir_path):
+  for filename in os.listdir(dir_path_content):
+    from_path = os.path.join(dir_path_content, filename)
+    dest_path = os.path.join(dest_dir_path, filename)
+    
+    if os.path.isfile(from_path):
+      if from_path.endswith(".md"):
+        dest_path = dest_path[:-3] + ".html"
+        generate_page(from_path, template_path, dest_path)
+    else:
+      generate_pages_recursive(from_path, template_path, dest_path)
+
 def main():
   print("Copying static files to public directory...")
   copy_files_recursive("./static", "./public")
-  generate_page("./content/index.md", "./template.html", "./public/index.html")
+  generate_pages_recursive("./content", "./template.html", "./public")
 
 if __name__ == "__main__":
   main()
