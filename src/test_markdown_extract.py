@@ -43,3 +43,15 @@ class TestExtractMarkdownLinks(unittest.TestCase):
     text = "![img](img.png) and [link](https://example.com)"
     result = extract_markdown_links(text)
     self.assertEqual(result, [("link", "https://example.com")])
+class TestExtractTitle(unittest.TestCase):
+  def test_extract_title(self):
+    title = extract_title("# Hello World")
+    self.assertEqual(title, "Hello World")
+    
+  def test_extract_title_extra_spaces(self):
+    title = extract_title("   \n#    Hello World   \n  ")
+    self.assertEqual(title, "Hello World")
+    
+  def test_extract_raises_error_no_h1(self):
+    with self.assertRaises(Exception):
+      extract_title("## No h1 here\njust text")
