@@ -70,7 +70,7 @@ def main():
 
   print("Copying static files to public directory...")
   copy_files_recursive("./static", "./docs")
-  generate_pages_recursive("./content", "./template.html", "./docs", basepath)
+  generate_pages_recursive("./content", "./template.html", "./docs")
 
 if __name__ == "__main__":
   main()
