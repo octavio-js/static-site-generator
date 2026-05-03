@@ -139,3 +139,33 @@ class TestSplitNodesLink(unittest.TestCase):
     node = TextNode("no links here", TextType.PLAIN)
     result = split_nodes_link([node])
     self.assertEqual(result, [node])
+
+class TestTextToTextNodes(unittest.TestCase):
+  def test_plain_text_returns_single_plain_node(self):
+    result = text_to_textnodes("just plain text")
+    self.assertEqual(result, [TextNode("just plain text", TextType.PLAIN)])
+
+  def test_bold_text(self):
+    result = text_to_textnodes("**bold**")
+    bold_nodes = [n for n in result if n.text_type == TextType.BOLD]
+    self.assertEqual(bold_nodes, [TextNode("bold", TextType.BOLD)])
+
+  def test_all_types_in_one_string(self):
+    text = "**bold** _italic_ `code` ![img](img.png) [link](https://example.com)"
+    result = text_to_textnodes(text)
+    types = [n.text_type for n in result]
+    self.assertIn(TextType.BOLD, types)
+    self.assertIn(TextType.ITALIC, types)
+    self.assertIn(TextType.CODE, types)
+    self.assertIn(TextType.IMAGE, types)
+    self.assertIn(TextType.LINK, types)
+
+  def test_image_node_has_correct_url(self):
+    result = text_to_textnodes("![cat](cat.png)")
+    image_nodes = [n for n in result if n.text_type == TextType.IMAGE]
+    self.assertEqual(image_nodes, [TextNode("cat", TextType.IMAGE, "cat.png")])
+
+  def test_link_node_has_correct_url(self):
+    result = text_to_textnodes("[click](https://example.com)")
+    link_nodes = [n for n in result if n.text_type == TextType.LINK]
+    self.assertEqual(link_nodes, [TextNode("click", TextType.LINK, "https://example.com")])
