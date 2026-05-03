@@ -22,6 +22,8 @@ def generate_page(from_path, template_path, dest_path):
   
   final_html = template_content.replace("{{ Title }}", title)
   final_html = final_html.replace("{{ Content }}", html_string)
+  final_html = final_html.replace("href=\"/", f"href={dest_path}")
+  final_html = final_html.replace("src=\"/", f"src={dest_path}")
   
   dest_dir = os.path.dirname(dest_path)
   if dest_dir != "" and not os.path.exists(dest_dir):
