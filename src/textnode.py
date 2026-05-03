@@ -19,7 +19,7 @@ class TextNode:
     return True if self.text == other.text and self.text_type.value == other.text_type.value and self.url == other.url else False
 
   def __repr__(self):
-    return f"TextNode({self.text}, {self.text_type.value}, {self.url})"
+    return f"TextNode({self.text}, {self.text_type}, {self.url})"
 
 def text_node_to_html_node(text_node):
   if text_node.text_type.value not in TextType:
