@@ -1,5 +1,6 @@
 import os
 import shutil
+import sys
 
 from textnode import TextNode, TextType
 from markdown_to_html import markdown_to_html_node
@@ -62,9 +63,14 @@ def generate_pages_recursive(dir_path_content, template_path, dest_dir_path):
       generate_pages_recursive(from_path, template_path, dest_path)
 
 def main():
+  if len(sys.argv) > 1:
+    basepath = sys.argv[1]
+  else:
+    basepath = "/"
+
   print("Copying static files to public directory...")
-  copy_files_recursive("./static", "./public")
-  generate_pages_recursive("./content", "./template.html", "./public")
+  copy_files_recursive("./static", "./docs")
+  generate_pages_recursive("./content", "./template.html", "./docs", basepath)
 
 if __name__ == "__main__":
   main()
